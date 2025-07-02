@@ -24,7 +24,7 @@ ifeq ($(shell pkg-config --exists sndfile || echo no), no)
   $(warning "The applications 'ltcdump' and 'jltcgen' are not built")
   $(warning "and 'make install' will fail.")
 else
-  APPS+=ltcdump ltcgen ltcstream
+  APPS+=ltcdump ltcgen
   CFLAGS+=`pkg-config --cflags sndfile`
   LOADLIBES+=`pkg-config --libs sndfile`
 endif
@@ -34,7 +34,7 @@ ifeq ($(APPS),)
 endif
 
 CFLAGS+=-DVERSION=\"$(VERSION)\"
-LOADLIBES+=-lm -lpthread
+LOADLIBES+=-lm -lpthread -lasound
 
 ifneq ($(shell uname),Darwin)
   LOADLIBES+=-lrt
@@ -56,8 +56,6 @@ jltcgen: jltcgen.c timecode.c common_ltcgen.c
 jltctrigger: jltctrigger.c ltcframeutil.c timecode.c
 
 ltcdump: ltcdump.c ltcframeutil.c common_ltcdump.c
-
-ltcstream: ltcstream.c ltcframeutil.c common_ltcdump.c
 
 jltc2mtc: jltc2mtc.c ltcframeutil.c
 
